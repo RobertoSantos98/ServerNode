@@ -6,7 +6,7 @@
   "start": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsup src"
+    "build": "server.js"
   },
   "keywords": [],
   "author": "",
