@@ -20,6 +20,15 @@ app.post('/register', async ( req, res ) => {
     const { name, email, password } = req.body;
 
     try {
+        const existingUser = await prisma.user.findUnique({
+            where: { email }
+        });
+        
+        if (existingUser) {
+            return res.status(450).json({ error: "Email já está em uso" });
+        }
+
+
         const hashedPassword = await bcrypt.hash( password, 10);
         const newUser = await prisma.user.create({
         data: {
@@ -29,7 +38,11 @@ app.post('/register', async ( req, res ) => {
         },
     })
         console.log("Um novo usuario foi adicionado no banco de dados.")
-        res.status(201).json(req.body)
+        res.status(201).json({
+            id: newUser.id,
+            name: newUser.name,
+            email: newUser.email
+        })
 
     } catch (error) {
         console.error('Erro ao registrar usuário: ' + error);
