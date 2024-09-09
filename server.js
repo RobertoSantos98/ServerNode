@@ -32,6 +32,7 @@ app.post('/register', async ( req, res ) => {
         res.status(201).json(req.body)
 
     } catch (error) {
+        console.error('Erro ao registrar usuário: ' + error);
         res.status(500).json({ error: error.message + 'Erro interno no servidor.' })
     }
 });
