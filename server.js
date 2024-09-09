@@ -7,12 +7,12 @@ const prisma = new PrismaClient();
 
 const app = express();
 
-const SECRET_KEY = 'Sua_JWT_chave_secreta';
+const SECRET_KEY = process.env.JWT_SECRET || 'Sua_JWT_chave_secreta';
 
 app.use(express.json());
 
 const gerarToken = ( user ) => {
-        return jwt.sign({ id:user.id, email: user.email }, SECRET_KEY, { expiresIn: '1h'});
+        return jwt.sign({ id:user.id, email: user.email }, SECRET_KEY, { expiresIn: '5h'});
 }
 
 app.post('/register', async ( req, res ) => {
@@ -21,18 +21,18 @@ app.post('/register', async ( req, res ) => {
 
     try {
         const hashedPassword = await bcrypt.hash( password, 10);
-        await prisma.user.create({
+        const newUser = await prisma.user.create({
         data: {
-            name: name,
-            email: email,
+            name,
+            email,
             password: hashedPassword
-        }
+        },
     })
         console.log("Um novo usuario foi adicionado no banco de dados.")
         res.status(201).json(req.body)
 
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ error: error.message + 'Erro interno no servidor.' })
     }
 });
 
