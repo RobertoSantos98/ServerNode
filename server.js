@@ -20,8 +20,8 @@ app.post('/register', async ( req, res ) => {
     const { name, email, password } = req.body;
 
     try {
-        const existingUser = await prisma.user.findUnique({
-            where: { email }
+        const existingUser = await prisma.user.findFirst({
+            where: { email: email }
         });
         
         if (existingUser) {
