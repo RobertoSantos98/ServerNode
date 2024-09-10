@@ -39,7 +39,6 @@ app.post('/register', async ( req, res ) => {
     })
         console.log("Um novo usuario foi adicionado no banco de dados.")
         res.status(201).json({
-            id: newUser.id,
             name: newUser.name,
             email: newUser.email
         })
