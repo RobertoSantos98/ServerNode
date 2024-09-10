@@ -25,7 +25,7 @@ app.post('/register', async ( req, res ) => {
         });
         
         if (existingUser) {
-            return res.status(450).json({ error: "Email já está em uso" });
+            return res.status(409).json({ error: "Email já está em uso" });
         }
 
 
@@ -39,6 +39,7 @@ app.post('/register', async ( req, res ) => {
     })
         console.log("Um novo usuario foi adicionado no banco de dados.")
         res.status(201).json({
+            id: newUser.id,
             name: newUser.name,
             email: newUser.email
         })
